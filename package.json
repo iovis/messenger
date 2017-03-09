@@ -14,7 +14,7 @@
   "scripts": {
     "test": "standard",
     "start": "electron .",
-    "build": "electron-packager . --out=dist --asar --overwrite --all"
+    "build": "electron-packager . --out=dist --icon=icons/messenger --asar --overwrite"
   },
   "keywords": [
     "electron-app",
