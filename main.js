@@ -1,6 +1,5 @@
-'use strict'
-
-const {app, BrowserWindow} = require('electron')
+const url = require('url')
+const { app, BrowserWindow, shell } = require('electron')
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')()
@@ -14,6 +13,32 @@ function onClosed () {
   mainWindow = null
 }
 
+// Open external links on default browser
+function onNewWindow (event, newURL) {
+  const urlObject = url.parse(newURL, true)
+
+  // Any external link will be sent to the default browser
+  if (urlObject.hostname !== 'l.messenger.com') {
+    event.preventDefault()
+    return shell.openExternal(urlObject.href)
+  }
+
+  // Messenger has some interesting views for some pages
+  const targetURL = url.parse(urlObject.query.u)
+
+  // Allowed targets
+  if (targetURL.hostname === 'media.giphy.com' ||         // Giphy
+      targetURL.href.match(/google\.\w{1,3}\/maps\//i) || // Google Maps
+      targetURL.href.match(/goo.gl\/maps\//i)             // Google Maps
+  ) {
+    return true
+  }
+
+  // If it's not known, don't show it
+  event.preventDefault()
+  return shell.openExternal(urlObject.href)
+}
+
 function createMainWindow () {
   const win = new BrowserWindow({
     width: 1280,
@@ -24,7 +49,9 @@ function createMainWindow () {
   })
 
   win.loadURL('https://messenger.com')
+
   win.on('closed', onClosed)
+  win.webContents.on('new-window', onNewWindow)
 
   return win
 }
