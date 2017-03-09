@@ -18,7 +18,6 @@ function createMainWindow () {
   const win = new BrowserWindow({
     width: 1280,
     height: 800,
-    titleBarStyle: 'hidden',
     webPreferences: {
       nodeIntegration: false
     }
@@ -26,19 +25,6 @@ function createMainWindow () {
 
   win.loadURL('https://messenger.com')
   win.on('closed', onClosed)
-
-  // Inject CSS
-  win.webContents.on('did-finish-load', () => {
-    win.webContents.insertCSS(`
-      div[role="banner"],
-      div[role="main"] > div:nth-child(2) {
-        padding-top: ${8 + 25}px;
-        height: ${50 + 8 + 25}px;
-        -webkit-app-region: drag;
-        -webkit-user-select: none;
-      }
-    `)
-  })
 
   return win
 }
