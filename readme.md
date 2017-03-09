@@ -1,6 +1,6 @@
 # messenger
 
-> My stupendous app
+An unofficial electron interface to Facebook Messenger http://messenger.com
 
 
 ## Dev
