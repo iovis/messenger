@@ -1,0 +1,32 @@
+{
+  "name": "messenger",
+  "productName": "Messenger",
+  "version": "0.0.0",
+  "description": "An unofficial electron interface to Facebook Messenger http://messenger.com",
+  "license": "MIT",
+  "main": "main.js",
+  "repository": "iovis9/messenger",
+  "author": {
+    "name": "David Marchante",
+    "email": "davidmarchan@gmail.com",
+    "url": "github.com/iovis9"
+  },
+  "scripts": {
+    "test": "standard",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --asar --overwrite --all"
+  },
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "electron-debug": "^1.0.0"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron": "^1.3.3",
+    "electron-packager": "^8.0.0",
+    "standard": "^9.0.1"
+  }
+}
