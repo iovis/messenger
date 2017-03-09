@@ -14,7 +14,7 @@ function onClosed () {
 }
 
 // Open external links on default browser
-function onNewWindow (event, newURL) {
+function onNewWindow (event, newURL, frameName, disposition, options) {
   const urlObject = url.parse(newURL, true)
 
   // Any external link will be sent to the default browser
@@ -22,6 +22,9 @@ function onNewWindow (event, newURL) {
     event.preventDefault()
     return shell.openExternal(urlObject.href)
   }
+  // Change width and height to something better
+  options.width = 1280
+  options.height = 800
 
   // Messenger has some interesting views for some pages
   const targetURL = url.parse(urlObject.query.u)
