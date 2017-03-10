@@ -1,7 +1,7 @@
 {
   "name": "messenger",
   "productName": "Messenger",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An unofficial electron interface to Facebook Messenger http://messenger.com",
   "license": "MIT",
   "main": "main.js",
