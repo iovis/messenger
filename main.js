@@ -1,5 +1,6 @@
 const url = require('url')
-const { app, BrowserWindow, shell } = require('electron')
+const menuTemplateBuilder = require('./lib/menu')
+const { app, BrowserWindow, Menu, shell } = require('electron')
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')()
@@ -59,6 +60,9 @@ function createMainWindow () {
   })
 
   win.loadURL('https://messenger.com')
+
+  const menu = menuTemplateBuilder(app, shell)
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
 
   win.on('closed', onClosed)
   win.webContents.on('new-window', onNewWindow)
