@@ -73,6 +73,7 @@ function createYouTubeWindow (urlObject, options) {
   const win = new BrowserWindow(options)
 
   win.loadURL(`https://www.youtube.com/embed/${urlObject.query.v}`)
+  win.webContents.on('new-window', onNewWindow)
   win.on('closed', onClosed)
 
   return win
