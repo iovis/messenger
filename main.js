@@ -17,6 +17,7 @@ function onClosed () {
 // Open external links on default browser
 function onNewWindow (event, newURL, frameName, disposition, options) {
   const urlObject = url.parse(newURL, true)
+  event.preventDefault()
 
   // Change width and height to something better
   options.width = 1280
@@ -33,19 +34,16 @@ function onNewWindow (event, newURL, frameName, disposition, options) {
         targetURL.href.match(/google\.\w{1,3}\/maps\//i) || // Google Maps
         targetURL.href.match(/goo.gl\/maps\//i)             // Google Maps
     ) {
-      return true
+      return createNewWindow(targetURL.href, options)
     } else if (targetURL.hostname === 'www.youtube.com') {
-      event.preventDefault()
-      return createYouTubeWindow(targetURL, options)
+      return createNewWindow(`https://www.youtube.com/embed/${targetURL.query.v}`, options)
     }
   // Show YouTube video in an embedded window
   } else if (urlObject.hostname === 'www.youtube.com') {
-    event.preventDefault()
-    return createYouTubeWindow(urlObject, options)
+    return createNewWindow(`https://www.youtube.com/embed/${urlObject.query.v}`, options)
   }
 
   // Any external link will be sent to the default browser
-  event.preventDefault()
   return shell.openExternal(urlObject.href)
 }
 
@@ -63,16 +61,17 @@ function createMainWindow () {
   const menu = menuTemplateBuilder(app, shell)
   Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
 
-  win.on('closed', onClosed)
   win.webContents.on('new-window', onNewWindow)
+  win.on('closed', onClosed)
 
   return win
 }
 
-function createYouTubeWindow (urlObject, options) {
+function createNewWindow (url, options) {
   const win = new BrowserWindow(options)
 
-  win.loadURL(`https://www.youtube.com/embed/${urlObject.query.v}`)
+  // win.loadURL(`https://www.youtube.com/embed/${urlObject.query.v}`)
+  win.loadURL(url)
   win.webContents.on('new-window', onNewWindow)
   win.on('closed', onClosed)
 
