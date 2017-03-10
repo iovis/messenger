@@ -20,29 +20,26 @@ function onNewWindow (event, newURL, frameName, disposition, options) {
 
   // Change width and height to something better
   options.width = 1280
-  options.height = 800
+  options.height = 720
 
   // Messenger has some interesting views for some pages
   if (urlObject.hostname === 'l.messenger.com') {
-    const targetURL = url.parse(urlObject.query.u)
+    const targetURL = url.parse(urlObject.query.u, true)
 
     // Allowed targets
-    if (targetURL.hostname === 'media.giphy.com' ||       // Giphy
-      targetURL.href.match(/google\.\w{1,3}\/maps\//i) || // Google Maps
-      targetURL.href.match(/goo.gl\/maps\//i)             // Google Maps
+    if (targetURL.hostname === 'media.giphy.com' ||         // Giphy
+        targetURL.href.match(/google\.\w{1,3}\/maps\//i) || // Google Maps
+        targetURL.href.match(/goo.gl\/maps\//i)             // Google Maps
     ) {
       return true
+    } else if (targetURL.hostname === 'www.youtube.com') {
+      event.preventDefault()
+      return createYouTubeWindow(targetURL, options)
     }
   // Show YouTube video in an embedded window
   } else if (urlObject.hostname === 'www.youtube.com') {
     event.preventDefault()
-
-    // Create a new window for the video
-    const win = new BrowserWindow(options)
-    win.loadURL(`https://www.youtube.com/embed/${urlObject.query.v}`)
-    win.on('closed', onClosed)
-
-    return true
+    return createYouTubeWindow(urlObject, options)
   }
 
   // Any external link will be sent to the default browser
@@ -66,6 +63,15 @@ function createMainWindow () {
 
   win.on('closed', onClosed)
   win.webContents.on('new-window', onNewWindow)
+
+  return win
+}
+
+function createYouTubeWindow (urlObject, options) {
+  const win = new BrowserWindow(options)
+
+  win.loadURL(`https://www.youtube.com/embed/${urlObject.query.v}`)
+  win.on('closed', onClosed)
 
   return win
 }
