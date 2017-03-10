@@ -23,7 +23,9 @@ function onNewWindow (event, newURL, frameName, disposition, options) {
   options.height = 720
 
   // Messenger has some interesting views for some pages
-  if (urlObject.hostname === 'l.messenger.com') {
+  if (urlObject.hostname === 'l.messenger.com' ||
+      urlObject.hostname === 'l.facebook.com'
+  ) {
     const targetURL = url.parse(urlObject.query.u, true)
 
     // Allowed targets
