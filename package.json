@@ -12,9 +12,9 @@
     "url": "github.com/iovis9"
   },
   "scripts": {
-    "test": "standard",
+    "test": "eslint .",
     "start": "electron .",
-    "build": "electron-packager . --out=dist --icon=icons/messenger --asar --overwrite --all"
+    "build": "npm test && electron-packager . --out=dist --icon=icons/messenger --asar --overwrite --all"
   },
   "keywords": [
     "electron-app",
@@ -27,6 +27,9 @@
     "devtron": "^1.1.0",
     "electron": "^1.3.3",
     "electron-packager": "^8.0.0",
-    "standard": "^9.0.1"
+    "eslint": "^3.17.1",
+    "eslint-config-standard": "^7.0.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1"
   }
 }
